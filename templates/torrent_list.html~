@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+{% block sidebar %}
+{% endblock %}
+{% block content %}
+
+
+<table>
+<tr>
+	<td>Torrent</td>
+	<td>Link</a></td>
+	<td>Size</td>
+	<td>S</td>
+	<td>L</td>
+	<td>Transfer</td>
+	<td>Category</td>
+</tr>
+<!-- {% for torrent in torrents %}
+<tr>
+	<td>{{ torrent.name}} </td>
+	<td><a href="t{{ torrent.file_path.name }}">[get]</a></td>
+	<td>{{ torrent.size|filesizeformat }}</td>
+	<td>{{ torrent.clients.count }}</td>
+	<td>{{ torrent.b_transfer|filesizeformat }}</td>
+	<td>{{ torrent.category.name }}</td>
+</tr>
+{% endfor %} -->
+
+{% for torrent in torrents %}
+<tr>
+	<td>{{ torrent.name}} </td>
+	<td><a href="t{{ torrent.file_path }}">[get]</a></td>
+	<td>{{ torrent.size|filesizeformat }}</td>
+	<td>{{ torrent.seed }}</td>
+	<td>{{ torrent.leech }}</td>
+	<td>{{ torrent.b_transfer|filesizeformat }}</td>
+	<td>{{ torrent.category }}</td>
+</tr>
+{% endfor %}
+</table>
+<br>
+{% endblock %}

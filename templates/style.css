@@ -1,0 +1,227 @@
+/*******************************************************
+TITLE: Fluid One-Column Layout (Basic) V1.0 (Beta)
+DATE: 20060524
+AUTHOR: The CSS Tinderbox - http://www.csstinderbox.com
+*******************************************************/
+
+body {
+margin:0;
+padding:0;
+background-color:#ffffff;
+font-family:Verdana, Arial, Helvetica, sans-serif;
+font-size:1em;
+}
+
+a {
+color:#cc0000;
+text-decoration:underline;
+}
+
+a:hover {
+color:#ffffff;
+text-decoration:none;
+}
+
+blockquote {
+margin:1em;
+padding:.5em;
+font-size:.9em;
+background-color:#cccccc;
+border-top:1px solid #999999;
+border-bottom:1px solid #999999;
+}
+
+blockquote p {
+margin:.2em;
+}
+
+#header {
+margin:2em 2em 0 2em;
+padding:1em 1.5em;
+height:5em;
+background-color:#cccccc;
+border:1px solid #eeeeee;
+}
+
+#header h1 { 
+margin:0; 
+padding:0;
+font-size:1.2em;
+}
+
+#header h3 { 
+margin:0; 
+padding:0;
+font-size:.9em;
+}
+
+#header a {
+text-decoration:none;
+}
+
+/*
+#leftColumn {
+float:right;
+width:12em;
+margin:1em;
+padding:1em .5em 2em .5em;
+background:#eeeeee;
+border:1px solid #000000;
+font-size:.9em;
+}
+
+#leftColumn h2 { 
+margin:0 0 -1em 0; 
+padding:0;
+font-size:1em;
+letter-spacing:.1em;
+}
+
+#leftColumn ul { 
+margin:1.5em 0 0 0; 
+padding:0;
+list-style:none;
+}
+
+#leftColumn li { 
+margin:0 0 .4em 0; 
+padding:0;
+}
+
+#leftColumn li a { 
+margin:0 0 0 .2em;
+color:#cc0000;
+text-decoration:none; 
+}
+
+#leftColumn li a:hover { 
+color:#ffffff;
+text-decoration:underline; 
+}
+*/
+
+
+#centerColumn {
+right:2.25em;
+margin-top:.2em;
+margin-left: 2.25em;
+margin-right:2.25em;
+voice-family: "\"}\"";
+voice-family: inherit;
+margin-left:2.25em;
+margin-right:2.25em;
+padding:1em .5em 2em .5em;
+background:#cccccc;
+font-size:.9em;
+}
+
+html>body #centerColumn {
+margin-left:2.25em;
+margin-right:2.25em;
+}
+
+#centerColumn h2 { 
+margin:0 0 -1em 0; 
+padding:0;
+font-size:1em;
+letter-spacing:.1em;
+}
+
+#rightColumn {
+float:right;
+margin:0 0 0 1em;
+padding:.7em;
+width:13em;
+background-color:#eeeeee;
+border:1px solid #000000;
+font-size:.8em;
+}
+
+#rightColumn h2 { 
+margin:0 0 -1em 0; 
+padding:0;
+font-size:1em;
+letter-spacing:.1em;
+}
+
+#rightColumn ul { 
+margin:1.5em 0 0 0; 
+padding:0;
+list-style:none;
+}
+
+#rightColumn li { 
+margin:0 0 .4em 0; 
+padding:0;
+}
+
+#rightColumn li a { 
+margin:0 0 0 .2em;
+color:#cc0000;
+text-decoration:none; 
+}
+
+#rightColumn li a:hover { 
+color:#ffffff;
+text-decoration:underline; 
+}
+
+
+#tags {
+margin:0 0 .5em 0;
+width:10em;
+float:left;
+border:none;
+text-align:left;
+}
+
+#tags img {
+border:none;
+}
+
+#tags p {
+margin:0 0 .25em 0;
+}
+
+#tags a {
+font-size:.8em;
+color:#cc0000;
+}
+
+#footer {
+right:2.85em;
+margin-top:.2em;
+margin-bottom:2em;
+margin-left: 2.85em;
+margin-right:2.85em;
+voice-family: "\"}\"";
+voice-family: inherit;
+margin-left:2.85em;
+margin-right:2.85em;
+padding:1em .5em 1em .5em;
+background:#cccccc;
+font-size:.7em;
+text-align:center;
+}
+
+html>body #footer {
+margin-left:2.85em;
+margin-right:2.85em;
+}
+
+/* Source: http://www.positioniseverything.net/easyclearing.html */
+.clearfix:after {
+content: "."; 
+display: block; 
+height: 0; 
+clear: both; 
+visibility: hidden;
+}
+
+.clearfix {display: inline-table;}
+
+/* Hides from IE-mac \*/
+* html .clearfix {height: 1%;}
+.clearfix {display: block;}
+/* End hide from IE-mac */
+

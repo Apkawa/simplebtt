@@ -1,0 +1,10 @@
+{% extends "base.html" %}
+{% block sidebar %}
+{% endblock %}
+{% block content %}
+Add torrent...
+<form enctype="multipart/form-data" action="." method="POST">
+{{ form }}<br>
+<input type="submit" value="Submit"></p>
+</form>
+{% endblock %}

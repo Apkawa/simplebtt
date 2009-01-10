@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+{% block sidebar %}
+{% endblock %}
+{% block content %}
+
+<h1>{% for catalog in catalogs %}/{{ catalog }}{% endfor %}/{{ post.title }}</h1>
+<hr>
+<p>{{ post.body }}</p>
+
+<h5>{{post.post_date}}</h5>
+
+{% endblock %}
