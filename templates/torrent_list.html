@@ -5,24 +5,26 @@
 
 
 <table>
-<tr>
-	<td>Torrent</td>
-	<td>Link</a></td>
-	<td>Size</td>
+
+
+<tr>	<td>Category</td>
+	<td>Torrent</a></td>
 	<td>S</td>
 	<td>L</td>
-	<td>Transfer</td>
-	<td>Category</td>
-</tr>
+	<td>C</td>
+	<td>Transfer</td></tr>
+
 {% for torrent in torrents %}
 <tr>
-	<td>{{ torrent.name}} </td>
-	<td><a href="t{{ torrent.file_path }}">[get]</a></td>
-	<td>{{ torrent.size|filesizeformat }}</td>
+	<td><b>{{ torrent.category }}</b></td>
+	<td><a href="tmedia/{{ torrent.file_path }}">{{ torrent.name}}</a> | <a href="info/{{ torrent.id }}">[info]</a><br>
+	Size: {{ torrent.size|filesizeformat }} | Date: {{ torrent.date|date:"r" }} | Description: {{ torrent.desc|truncatewords:5 }}
+	</td>
 	<td>{{ torrent.seed }}</td>
 	<td>{{ torrent.leech }}</td>
+	<td>{{ torrent.complete }}</td>
 	<td>{{ torrent.b_transfer|filesizeformat }}</td>
-	<td>{{ torrent.category }}</td>
+	
 </tr>
 {% endfor %}
 </table>

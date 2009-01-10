@@ -1,7 +1,8 @@
 from simplebtt.tracker.models import Torrent, User, Client, Category
 from django.contrib import admin
+from simplebtt import settings
 import hunnyb
-#from benc import bencode
+from simplebtt.tracker.benc import bencode, bdecode
 
 class UserAdmin(admin.ModelAdmin):
     list_display = ['aunt', 'passkey']
@@ -24,7 +25,8 @@ class TorrentAdmin(admin.ModelAdmin):
     def save_model(self, request, obj, form, change):
         if request.FILES.keys():
             obj.name, obj.info_hash, obj.size , torrent_file = self._get_info_torrent( request.FILES['file_path'] )
-            f = open(str(obj.file_path), 'w')
+            path = settings.MEDIA_ROOT+'/'+str(obj.file_path)
+            f = open(path, 'w')
             f.write( torrent_file )
             f.close()
             obj.save()
@@ -39,10 +41,10 @@ class TorrentAdmin(admin.ModelAdmin):
         a = ''
         for chunk in torrent.chunks(): a = a+chunk
 
-        torrent = hunnyb.decode(a)
+        torrent = bdecode(a)
         torrent['announce'] = 'http://%s/announce' %Site.objects.all()[0].domain
-        torrent_file = hunnyb.encode(torrent)
-        _hash = sha1( hunnyb.encode(torrent['info']))
+        torrent_file = bencode(torrent)
+        _hash = sha1( bencode(torrent['info']))
         hash_base64 = base64.b64encode(_hash.digest())
         name = torrent['info']['name']
         size = torrent['info']['length']
