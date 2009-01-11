@@ -14,7 +14,7 @@ def torrent_list( request ):
     temp = Torrent.objects.all()
     t_t = [ {
         'id' : t.id,
-        'category' : t.category.name,
+        'category' : t.category,
         'name':t.name,
         'file_path' : t.file_path,
         'size' : t.size,

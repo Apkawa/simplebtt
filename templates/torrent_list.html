@@ -8,7 +8,7 @@
 
 
 <tr>	<td>Category</td>
-	<td>Torrent</a></td>
+	<td>Torrent</td>
 	<td>S</td>
 	<td>L</td>
 	<td>C</td>
@@ -16,9 +16,15 @@
 
 {% for torrent in torrents %}
 <tr>
-	<td><b>{{ torrent.category }}</b></td>
-	<td><a href="tmedia/{{ torrent.file_path }}">{{ torrent.name}}</a> | <a href="info/{{ torrent.id }}">[info]</a><br>
-	Size: {{ torrent.size|filesizeformat }} | Date: {{ torrent.date|date:"r" }} | Description: {{ torrent.desc|truncatewords:5 }}
+	<td>
+	{% if torrent.category.img_url %}
+	<img src="{{ torrent.category.img_url }}"  alt="{{ torrent.category }}" width="50" height="50" />
+	
+	{% else %}
+	<b>{{ torrent.category }}</b></td>
+	{% endif %}
+	<td><a href="tmedia/{{ torrent.file_path }}">{{ torrent.name}}</a> | <a href="info/{{ torrent.id }}">[info]</a>
+	<p>Size: {{ torrent.size|filesizeformat }} | Date: {{ torrent.date|date:"r" }} | Description: {{ torrent.desc|truncatewords:5 }}</p>
 	</td>
 	<td>{{ torrent.seed }}</td>
 	<td>{{ torrent.leech }}</td>
@@ -26,7 +32,27 @@
 	<td>{{ torrent.b_transfer|filesizeformat }}</td>
 	
 </tr>
+ 	 	  	
 {% endfor %}
 </table>
-<br>
+
+<p>Summary Tracker Info
+<table>
+<tr>
+	<td>Total Space Used</td>
+	<td>Seeders</td>
+	<td>Leechers</td>
+	<td>Completed DL</td>
+	<td>Bytes Transferred </td>
+</tr>
+<tr>
+	<td>0</td>
+	<td>0</td>
+	<td>0</td>
+	<td>0</td>
+	<td>0</td>
+</tr>
+</table>
+</p>
+
 {% endblock %}

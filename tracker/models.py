@@ -54,6 +54,13 @@ class Torrent(models.Model):
     def __unicode__(self):
         return  u'%s'%self.name
 
+class Stat(models.Model):
+    all_size = models.IntegerField( max_length = 1024 )
+    seeds = models.IntegerField( max_length = 1024 )
+    leechs = models.IntegerField( max_length = 1024 )
+    completeds = models.IntegerField( max_length = 1024 )
+    b_transfers = models.IntegerField( max_length = 1024 )
+
 from django.forms import ModelForm
 class TorrentForm(ModelForm):
     class Meta:
