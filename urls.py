@@ -10,6 +10,7 @@ urlpatterns = patterns('',
     # (r'^simplebtt/', include('simplebtt.foo.urls')),
     (r'^announce/$', 'simplebtt.tracker.announce.main'),
     (r'^$', 'simplebtt.tracker.views.torrent_list'),
+    (r'^category/(\w{1,50})$', 'simplebtt.tracker.views.torrent_list'),
     (r'^info/(\d{1,4})$', 'simplebtt.tracker.views.torrent_info'),
 
 

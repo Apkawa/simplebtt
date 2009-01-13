@@ -1,5 +1,6 @@
 from django.db import models
 
+
 # Create your models here.
 class User(models.Model):
     #auth = models.OneToOneField(auth_models.User, verbose_name="Django auth user")
@@ -18,12 +19,12 @@ class Client(models.Model):
     ul = models.IntegerField( max_length=1024 )
     left = models.IntegerField( max_length=1024 ) #left = 0  - seeder else leacher
 
-    last_update = models.TimeField( blank=True)
+    last_update = models.DateTimeField( auto_now=True, auto_now_add=True )
     def __unicode__(self):
         return  u'%s %s'%(self.user, self.ip)
 
 class Category(models.Model):
-    name = models.CharField(max_length=255)
+    name = models.CharField(max_length=50)
     img_url = models.URLField( blank= True)
     img = models.ImageField( upload_to='image/category', blank=True)
     def __unicode__(self):
@@ -37,7 +38,7 @@ class Torrent(models.Model):
 
     category = models.ForeignKey(Category)
     description = models.TextField( max_length=2048, blank= True)
-    creation_date = models.DateTimeField()
+    creation_date = models.DateTimeField(auto_now_add=True)
     completed = models.IntegerField( max_length = 6, default = 0)
 
 
@@ -53,18 +54,63 @@ class Torrent(models.Model):
     #slug = models.SlugField( blank=True)#prepopulate_from=("pre_name", "name"))
     def __unicode__(self):
         return  u'%s'%self.name
+    def save(self):
+        #print "save torrent"
+        #print self, dir(self)
+        torrent = self.file_path
+        torrent_path = torrent._get_path()
+        if not torrent_path.endswith('.torrent'):
+            print "this file not torrent"
+        else:
+            self.name, self.info_hash, self.size , torrent_file = _get_info_torrent( self.file_path._get_file().read() )
+            f = open( torrent_path, 'w')
+            f.write( torrent_file )
+            f.close()
+            stat= Stat.objects.get(id=1)
+            stat.all_size += self.size
+            print "test"
+            super( Torrent, self).save()
+            stat.save()
+    def delete(self):
+        stat = Stat.objects.get(id=1)
+        stat.all_size -= self.size
+        #print dir(self)
+        super(Torrent, self).delete()
+        #self.file_path.delete()
+        stat.save()
 
 class Stat(models.Model):
-    all_size = models.IntegerField( max_length = 1024 )
-    seeds = models.IntegerField( max_length = 1024 )
-    leechs = models.IntegerField( max_length = 1024 )
-    completeds = models.IntegerField( max_length = 1024 )
-    b_transfers = models.IntegerField( max_length = 1024 )
+    all_size = models.IntegerField( max_length = 1024 ,default=0)
+    seeds = models.IntegerField( max_length = 1024 ,default=0)
+    leechs = models.IntegerField( max_length = 1024 ,default=0)
+    completeds = models.IntegerField( max_length = 1024 ,default=0)
+    b_transfers = models.IntegerField( max_length = 1024 ,default=0)
+    speed = models.IntegerField( max_length = 1024 ,default=0)
+    def save(self):
+        self.seeds = Client.objects.filter(left=0).count()
+        self.leechs = Client.objects.exclude(left=0).count()
+        super( Stat, self).save()
 
-from django.forms import ModelForm
-class TorrentForm(ModelForm):
-    class Meta:
-        model = Torrent
-        exclude = ('clients','info_hash','slug','inactive_since','author','f_active')
 
 
+def _get_info_torrent(torrent):
+    from django.contrib.sites.admin import Site
+    from hashlib import sha1
+    import base64
+    from simplebtt.tracker.benc import bencode, bdecode
+
+    a = torrent
+    torrent = bdecode(a)
+    torrent['announce'] = 'http://%s/announce' %Site.objects.all()[0].domain
+    torrent_file = bencode(torrent)
+    _hash = sha1( bencode(torrent['info']))
+    hash_base64 = base64.b64encode(_hash.digest())
+    name = torrent['info']['name']
+    files = torrent['info'].get('files')
+    size = 0
+    if files:
+        for f in files:
+            size += f['length']
+    else:
+        size = torrent['info']['length']
+    return name, hash_base64, size, torrent_file

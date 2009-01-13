@@ -1,7 +1,7 @@
 from django.http import HttpResponse, HttpResponseNotFound
 from django.core.exceptions import ObjectDoesNotExist
 from django.utils.encoding import DjangoUnicodeDecodeError
-from simplebtt.tracker.models import Torrent, User, Client, TorrentForm
+from simplebtt.tracker.models import Torrent, User, Client, Stat, Category# TorrentForm
 
 from urllib import unquote
 from re import findall
@@ -10,22 +10,25 @@ import base64
 from benc import bencode
 
 
-def torrent_list( request ):
-    temp = Torrent.objects.all()
+def torrent_list( request, category=None ):
+
+    list_category = Category.objects.all()
+    if not category:
+        temp = Torrent.objects.all()
+    else:
+        temp = Torrent.objects.filter( category__name = category )
+
     t_t = [ {
-        'id' : t.id,
-        'category' : t.category,
-        'name':t.name,
-        'file_path' : t.file_path,
-        'size' : t.size,
-        'date' : t.creation_date,
-        'desc' : t.description,
+        't': t,
         'leech': t.clients.exclude(left = 0).count(),
-        'seed' : t.clients.filter( left = '0' ).count(),
-        'complete' : t.completed,
-        'b_transfer' : t.b_transfer,
+        'seed' : t.clients.filter( left = 0 ).count(),
         } for t in temp]
-    return render_to_response('torrent_list.html', {'torrents': t_t})
+    stat ={
+            's':Stat.objects.get(id=1),
+            #'leechs': Client.objects.exclude(left=0).count(),
+            #'seeds' : Client.objects.filter(left=0).count(),
+            }
+    return render_to_response('torrent_list.html', {'torrents': t_t, 'stat': stat, 'category': list_category})
 
 def torrent_info( request, _id ):
     _i = Torrent.objects.filter(id=_id)
