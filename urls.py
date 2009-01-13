@@ -1,4 +1,5 @@
 from django.conf.urls.defaults import *
+#from captcha import urls
 
 
 # Uncomment the next two lines to enable the admin:
@@ -14,7 +15,7 @@ urlpatterns = patterns('',
     (r'^info/(\d{1,4})$', 'simplebtt.tracker.views.torrent_info'),
 
 
-#    (r'^add/$','simplebtt.tracker.views.upload_torrent'),
+    (r'^add/$','simplebtt.tracker.views.torrent_add'),
 
     # Uncomment the admin/doc line below and add 'django.contrib.admindocs' 
     # to INSTALLED_APPS to enable admin documentation:

@@ -10,24 +10,31 @@ import datetime
 
 def _stat( t, c, client):
     stat = Stat.objects.get(id=1)
+    print client['downloaded'],c.dl,client['uploaded'],c.ul
     transfer = (client['downloaded']-c.dl)+(client['uploaded']-c.ul)
+    print t.b_transfer
     if t.b_transfer:
         if t.b_transfer != transfer:
             t.b_transfer += transfer
             stat.b_transfers += transfer
     else:
         t.b_transfer = transfer
+
     if client['event'] == 'stopped':
         c.delete()
+        return False
 
-    elif c.left != client['left']:
-        c.dl, c.ul, k.left = client['downloaded'], client['uploaded'], client['left']
-        if c.left != client['left'] and c.left == '0':
-            t.completed += 1
-            stat.completeds += 1
+    elif c.left != client['left'] or c.dl != client['downloaded'] or c.ul !=['uploaded']:
+        c.dl, c.ul, c.left = client['downloaded'], client['uploaded'], client['left']
+
+    if c.left != client['left'] and client['left'] == '0' and c.left != 0:
+        t.completed += 1
+        stat.completeds += 1
 
     elif c.ip != client['ip']:
         c.ip = client['ip']
+
+    c.save()
 
 
 def main( request):
@@ -52,8 +59,6 @@ def main( request):
     client['left'] = int(request.GET.get('left'))
 
     client['passkey'] = 'none'
-    #now = datetime.datetime.now
-
 
     banned_client = ('OP','FUTB','exbc','-TS','Mbrst','-BB','-SZ','turbo','T03A','T03B','FRS','eX','-TR0005-','-TR0006-','-XX0025-','-AG','R34',)
     for ban in banned_client:

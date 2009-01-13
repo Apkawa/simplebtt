@@ -1,40 +1,45 @@
-{% extends "simplebtt-base.html" %}
+{% extends "simplebtt-base-2.html" %}
 {% block sidebar %}
 {% endblock %}
 {% block content %}
-        <div class="box content">
-            <h3>Category</h3>
-			<div class="box">
-				<ul class="menu-h a-center">
-					<li></li>
-					<li><a href="/">all</a></li>
-            {% for c in category %}
-					<li><a href="/category/{{ c.name }}">{{ c.name }}</a></li>
-            {% endfor %}
-                </ul>
+        <div class="span-22 prepend-1">
+            <div class="a-center">
+                | <a href="/">all ({{ count_all_torrent }})</a>
+                {% for c in category %} | 
+                <a href="/category/{{ c.name }}">{{ c.name }} ({{ c.torrent_set.count }})</a>
+                {% endfor %} |
             </div>
-
-            <h3>Torrents</h3>
+        <div class="span-22">
             <table>
-            <tr><th>Category</th>
-                <th>Torrent</th>
-                <th>S</th>
-                <th>L</th>
-                <th>C</th>
-                <th>Transfer</th>
+                <thead>
+            <tr><th class="span-2 a-center">Category</th>
+                <th class="span-16 a-center">Torrent</th>
+
+                <th class="span-1 a-center">S</th>
+                <th class="span-1 a-center">L</th>
+                <th class="span-1 a-center">C</th>
+                <th class="span-2 a-center">Transfer</th>
             </tr>
+            </thead>
 {% for torrent in torrents %}
 <tr>
     <td class="a-center v-center">{% if torrent.t.category.img_url %}<img src="{{ torrent.t.category.img_url }}"  alt="{{ torrent.t.category }}"/>        {% else %}<a href="/category/{{ torrent.t.category }}"><b>{{ torrent.t.category }}</b></a>{% endif %}</td>
-<td><a href="tmedia/{{ torrent.t.file_path }}">{{ torrent.t.name}}</a> | <a href="info/{{ torrent.t.id }}">「info」</a><br/>
+<td><a href="/tmedia/{{ torrent.t.file_path }}">{{ torrent.t.name}}</a> | <a href="/info/{{ torrent.t.id }}">[info]</a><br/>
         Size: {{ torrent.t.size|filesizeformat }} | Date add: {{ torrent.t.creation_date|date:"r" }} <br/> 
-        Description: {{ torrent.t.description|truncatewords:5 }}</td>
+        {% if torrent.t.description %} Description: {{ torrent.t.description|truncatewords:5 }}
+        {% else %}
+        {% endif %}
+    </td>
 	<td class="a-center">{{ torrent.seed }}</td>
 	<td class="a-center">{{ torrent.leech }}</td>
 	<td class="a-center">{{ torrent.t.completed }}</td>
 	<td class="a-center">{{ torrent.t.b_transfer|filesizeformat }}</td>
 </tr>{% endfor %}
-</table>
+            </table>
+        </div>
+        </div>
+
+{% comment %}
 <h3>Summary Tracker Info</h3>
 <table>
 <tr>
@@ -52,6 +57,6 @@
     <td>{{ stat.s.b_transfers|filesizeformat }}</td>
 </tr>
 </table>
+{% endcomment %}
 
-</div>
 {% endblock %}

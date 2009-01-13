@@ -1,8 +1,5 @@
 from simplebtt.tracker.models import Torrent, User, Client, Category, Stat
 from django.contrib import admin
-from simplebtt import settings
-import hunnyb
-from simplebtt.tracker.benc import bencode, bdecode
 
 class UserAdmin(admin.ModelAdmin):
     list_display = ['aunt', 'passkey']
