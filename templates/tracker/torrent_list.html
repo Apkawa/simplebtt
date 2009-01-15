@@ -1,0 +1,61 @@
+{% extends "tracker_base.html" %}
+
+{% load tracker %}
+{% block tracker_header_add %}
+<div class="a-center span-22">
+    {% category %}
+</div>
+{% endblock %}
+
+{% block tracker_main %}
+        <div class="span-22">
+            <table>
+                <thead>
+            <tr><th class="span-2 a-center">Category</th>
+                <th class="span-16 a-center">Torrent</th>
+                <th class="span-1 a-center">S</th>
+                <th class="span-1 a-center">L</th>
+                <th class="span-1 a-center">C</th>
+                <th class="span-2 a-center">Transfer</th>
+            </tr>
+            </thead>
+{% for torrent in torrents %}
+<tr>
+    <td class="a-center v-center">
+        {% if torrent.t.category.img_url %}<img src="{{ torrent.t.category.img_url }}"  alt="{{ torrent.t.category }}"/>
+        {% else %}<a href="/category/{{ torrent.t.category|escape }}"><b>{{ torrent.t.category }}</b></a>{% endif %}</td>
+<td><a href="/tmedia/{{ torrent.t.file_path }}">{{ torrent.t.name}}</a> | <a href="/info/{{ torrent.t.id }}">[info]</a><br/>
+Size: <b>{{ torrent.t.size|filesizeformat }}</b> | Date add: {{ torrent.t.creation_date|date:"r" }} <br/> 
+{% if torrent.t.description %} Description: {{ torrent.t.description|striptags|truncatewords:5 }}
+{% endif %}
+    </td>
+    <td class="a-center">{{ torrent.seed }}</td>
+    <td class="a-center">{{ torrent.leech }}</td>
+    <td class="a-center">{{ torrent.t.completed }}</td>
+    <td class="a-center">{{ torrent.t.b_transfer|filesizeformat }}</td>
+</tr>
+{% endfor %}
+</table>
+</div>
+{% comment %}
+<table>
+<tr>
+    <th class="a-center">Total Space Used</th>
+    <th class="a-center">Total Torrents</th>
+    <th class="a-center">Seeders</th>
+    <th class="a-center">Leechers</th>
+    <th class="a-center">Completed DL</th>
+    <th class="a-center">Bytes Transferred </th>
+</tr>
+<tr>
+    <td class="a-center">{{ stat.s.all_size|filesizeformat }}</td>
+    <td class="a-center">{{ stat.s.all_torrents }}</td>
+    <td class="a-center">{{ stat.s.seeds }}</td>
+    <td class="a-center">{{ stat.s.leechs }}</td>
+    <td class="a-center">{{ stat.s.completeds }}</td>
+    <td class="a-center">{{ stat.s.b_transfers|filesizeformat }}</td>
+</tr>
+</table>
+{% endcomment %}
+
+{% endblock %}

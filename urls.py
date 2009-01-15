@@ -13,9 +13,11 @@ urlpatterns = patterns('',
     (r'^$', 'simplebtt.tracker.views.torrent_list'),
     (r'^category/(\w{1,50})$', 'simplebtt.tracker.views.torrent_list'),
     (r'^info/(\d{1,4})$', 'simplebtt.tracker.views.torrent_info'),
-
-
+    (r'^search/', 'simplebtt.tracker.views.search'),
     (r'^add/$','simplebtt.tracker.views.torrent_add'),
+#    (r'tracker/', include('simplebtt.tracker.urls') ),
+
+
 
     # Uncomment the admin/doc line below and add 'django.contrib.admindocs' 
     # to INSTALLED_APPS to enable admin documentation:

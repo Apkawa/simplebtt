@@ -61,11 +61,14 @@ MIDDLEWARE_CLASSES = (
     'django.middleware.common.CommonMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
+    'django.middleware.gzip.GZipMiddleware',
 )
 
 ROOT_URLCONF = 'simplebtt.urls'
 
-TEMPLATE_DIRS = ( '/home/apkawa/Code/test/django/simplebtt/templates',
+TEMPLATE_DIRS = (
+'/home/apkawa/Code/test/django/simplebtt/templates',
+'/home/apkawa/Code/test/django/simplebtt/templates/tracker',
     # Put strings here, like "/home/html/django_templates" or "C:/www/django/templates".
     # Always use forward slashes, even on Windows.
     # Don't forget to use absolute paths, not relative paths.
@@ -85,4 +88,10 @@ INSTALLED_APPS = (
 ALLOWED_INCLUDE_ROOTS = ( '/tmp',)
 
 FORCE_SCRIPT_NAME="" # http://softwaremaniacs.org/forum/django/3887/
+APPEND_SLASH = True
+#Setting reCAPTCHA
+
+RECAPTCHA_PUB_KEY = "6LesqwQAAAAAAHRbpBe8T8H5xg3nc9WCoLukieyd"
+RECAPTCHA_PRIVATE_KEY = "6LesqwQAAAAAADHCDy7NKYChjM-miI0ktmy2eI3T"
+
 

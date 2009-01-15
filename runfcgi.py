@@ -5,6 +5,6 @@
 
 #python manage.py runfcgi method=prefork socket=/tmp/simplebtt.sock pidfile=/tmp/simplebtt.pid daemonize=false
 
-python manage.py runfcgi method=threaded host=127.0.0.1 port=4747 daemonize=false # protocol=scgi
+python manage.py runfcgi method=threaded host=127.0.0.1 port=4747 daemonize=false  protocol=scgi
 
 

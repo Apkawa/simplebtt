@@ -25,6 +25,28 @@ class TorrentParser:
             return self.meta_info['length']
     def get_file(self):
         return bencode(self.meta)
+    def get_filenames_and_size(self, json=True):
+        files = self.meta_info.get('files')
+        if files:
+            file_and_size = [ {
+                'file':'/'.join(f['path.utf-8']),
+                'size': f['length']} for f in files ]
+        else:
+            file_and_size = [{
+                'file': self.meta_info.get('name.utf-8') or self.meta_info.get('name') ,
+                'size':self.meta_info['length']
+                }]
+        if json:
+            from json import dumps
+            return dumps( file_and_size )
+
+        pass
+    def get_all_announce_str(self, delimiter='|'):
+        anon = [self.meta['announce']]
+        anon_list = self.meta.get('announce-list')
+        if anon_list:
+            anon.extend( [ m[0] for m in anon_list])
+        return delimiter.join(list(set(anon)))
     def add_in_announce_list(self, url, end=False):
         if self.meta.get('announce-list'):
             if end:
@@ -34,27 +56,7 @@ class TorrentParser:
         else:
             self.meta['announce-list'] = [[url],]
 
-        pass
 
-
-
-def _get_info_torrent(torrent):
-
-    a = torrent
-    torrent = bdecode(a)
-    torrent['announce'] = 'http://%s/announce' %Site.objects.all()[0].domain
-    torrent_file = bencode(torrent)
-    _hash = sha1( bencode(torrent['info']))
-    hash_base64 = base64.b64encode(_hash.digest())
-    name = torrent['info']['name']
-    files = torrent['info'].get('files')
-    size = 0
-    if files:
-        for f in files:
-            size += f['length']
-    else:
-        size = torrent['info']['length']
-    return name, hash_base64, size, torrent_file
 
 if __name__ == '__main__':
     f = open('/home/apkawa/Code/test/download.torrent', 'r')
@@ -62,16 +64,21 @@ if __name__ == '__main__':
     tp.parse_file(f.read())
     f.close()
     print dir(tp)
+    #print tp.meta
+    #print tp.meta_info
     print tp.get_name()
     print tp.get_info_hash()
     print tp.get_info_hash_base64()
     print tp.get_size()
     print tp.meta['announce']
-    print tp.meta['announce-list']
+    #print tp.meta['announce-list']
+    print tp.get_all_announce_str()
     tp.add_in_announce_list('http://nya.org.ru/lalalal')
-    print tp.meta['announce-list']
-    e = open('/home/apkawa/Code/test/test-nya.torrent', 'w')
-    e.write(tp.get_file())
-    e.close()
+    #print tp.meta['announce-list']
+    print tp.get_filenames_and_size()
+    print len(tp.get_filenames_and_size())
+    #e = open('/home/apkawa/Code/test/test-nya.torrent', 'w')
+    #e.write(tp.get_file())
+    #e.close()
 
 

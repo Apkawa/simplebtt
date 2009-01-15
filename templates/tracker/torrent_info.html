@@ -1,0 +1,25 @@
+{% extends "tracker_base.html" %}
+{% block tracker_main %}
+<div class="span-16 prepend-3">
+<h6>Torrent info</h6>
+<table >
+    <tr><th>Name:       </th><td>{{ i.t.name}} <a href="/tmedia/{{ i.t.file_path }}">[.torrent]</a></td></tr>
+    <tr><th>Category:   </th><td><a href="/category/{{ i.t.category }}">{{ i.t.category }}</a></td></tr>
+	<tr><th>Size:       </th><td>{{ i.t.size|filesizeformat }} </td></tr>
+	<tr><th>Date:       </th><td>{{ i.t.creation_date|date:"r" }}</td></tr>
+	<tr><th>Description:</th><td>{{ i.t.description|striptags }}</td></tr>
+    <tr><th>Announce:   </th><td>{% if announce_list %}{{ announce_list|join:" <br/> " }}{% endif %}</td></tr>
+	<tr><th>Info hash (base 64): </th><td>{{ i.t.info_hash }}</td></tr>
+    <tr><th>Seeders:    </th><td>{{ i.seed }}</td></tr>
+	<tr><th>Leechers:   </th> <td>{{ i.leech }}</td></tr>
+	<tr><th>Completed:  </th> <td>{{ i.t.completed }}</td></tr>
+	<tr><th>Transfered:  </th><td>{{ i.t.b_transfer|filesizeformat }}</td></tr>
+</table>{% if file_list %}
+<table>
+    <tr><th>File:</th></tr>
+    
+    <tr><td>{% for f_l in file_list %}{{ f_l.file }} : [{{ f_l.size|filesizeformat }}]<br/>{% endfor %}</td></tr>
+    
+</table>{% endif %}
+</div>
+{% endblock %}

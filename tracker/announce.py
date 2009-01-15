@@ -10,9 +10,9 @@ import datetime
 
 def _stat( t, c, client):
     stat = Stat.objects.get(id=1)
-    print client['downloaded'],c.dl,client['uploaded'],c.ul
+    #print client['downloaded'],c.dl,client['uploaded'],c.ul
     transfer = (client['downloaded']-c.dl)+(client['uploaded']-c.ul)
-    print t.b_transfer
+    #print t.b_transfer
     if t.b_transfer:
         if t.b_transfer != transfer:
             t.b_transfer += transfer
@@ -92,44 +92,5 @@ def main( request):
     r = {'peers': clients, 'interval': 1800}
 
     return HttpResponse( bencode(r))
-'''
-    try:
-        #if a user already eists, we're good.
-        _client ={ 'user' : u,
-                    'ip' : client['ip'],
-                    'port' : client['port'],
-                    'dl':client['downloaded'],
-                    'ul':client['uploaded'],
-                    'left' : client['left'],
-                    }
-        #k = t.objects.get_or_create(peer_id=client['peer_id'])
-        transfer = (client['downloaded']-k.dl)+(client['uploaded']-k.ul)
-        if t.b_transfer:
-            if t.b_transfer != transfer:
-                t.b_transfer += transfer
-                stat.b_transfers += transfer
-        else:
-            t.b_transfer = transfer
-        if client['event'] == 'stopped':
-            k.delete()
-
-        elif k.left != client['left']:
-            k.dl, k.ul, k.left = client['downloaded'], client['uploaded'], client['left']
-            if k.left != client['left'] and k.left == '0':
-                t.completed += 1
-                stat.completeds += 1
-
-        elif k.ip != client['ip']:
-            k.ip = client['ip']
-
-    except ObjectDoesNotExist:
-        #if the user doesn't exist, create one
-        if client['event'] == 'stopped':
-            pass
-        else:
-            t.clients.create(user=u, ip=client['ip'], port=client['port'],
-                    peer_id=client['peer_id'], dl=client['downloaded'], ul=client['uploaded'], left = client['left'])# , last_update = now().time())
-
-'''
 
 
