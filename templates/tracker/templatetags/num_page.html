@@ -1,0 +1,7 @@
+{% if prev_page %}
+{% if category %}<a href="{% url simplebtt.tracker.views.torrent_list category prev_page %}">&lt;&lt; Previous {{ step }}</a>
+{% else %}<a href="{% url simplebtt.tracker.views.torrent_list prev_page %}">&lt;&lt; Previous {{ step }}</a>  {% endif %}
+{% else %}&lt;&lt; Previous {{ step }}
+{%endif%} | {% if prev_page %}{% if category %}<a href="{% url simplebtt.tracker.views.torrent_list category next_page %}"> Next {{ step }} &gt;&gt;</a>
+    {% else %}<a href="{% url simplebtt.tracker.views.torrent_list next_page %}"> Next {{ step }} &gt;&gt;</a>{% endif %}
+{% else %}Next {{ step }} &gt;&gt;{% endif %}

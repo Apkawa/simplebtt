@@ -1,0 +1,1 @@
+<p><a href="/" class="category">all ({{ count_all }})</a>{% for c in category %} | <a href="{% url simplebtt.tracker.views.torrent_list c.name|escape %}" class="category">{{ c.name|escape }} ({{ c.torrent_set.count }})</a>{% endfor %}</p>
