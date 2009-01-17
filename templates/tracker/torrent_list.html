@@ -2,9 +2,8 @@
 
 {% load tracker %}
 {% block tracker_header_add %}
-<div class="a-center span-22">
     {% category %}
-</div>
+    {% num_page num_page %}
 {% endblock %}
 
 {% block tracker_main %}
@@ -23,10 +22,10 @@
 <tr>
     <td class="a-center v-center">
         {% if torrent.t.category.img_url %}<img src="{{ torrent.t.category.img_url }}"  alt="{{ torrent.t.category }}"/>
-        {% else %}<a href="/category/{{ torrent.t.category|escape }}"><b>{{ torrent.t.category }}</b></a>{% endif %}</td>
+        {% else %}<a href="{% url simplebtt.tracker.views.torrent_list torrent.t.category|escape %}"><b>{{ torrent.t.category }}</b></a>{% endif %}</td>
 <td><a href="/tmedia/{{ torrent.t.file_path }}">{{ torrent.t.name}}</a> | <a href="/info/{{ torrent.t.id }}">[info]</a><br/>
 Size: <b>{{ torrent.t.size|filesizeformat }}</b> | Date add: {{ torrent.t.creation_date|date:"r" }} <br/> 
-{% if torrent.t.description %} Description: {{ torrent.t.description|striptags|truncatewords:5 }}
+{% if torrent.t.description %} Description: <i>{{ torrent.t.description|striptags|truncatewords:7 }}</i>
 {% endif %}
     </td>
     <td class="a-center">{{ torrent.seed }}</td>
@@ -36,26 +35,11 @@ Size: <b>{{ torrent.t.size|filesizeformat }}</b> | Date add: {{ torrent.t.creati
 </tr>
 {% endfor %}
 </table>
+<div class="a-center span-22">
+    {% block tracker_main_botton %}
+    {% num_page num_page %}
+    {% endblock %}
 </div>
-{% comment %}
-<table>
-<tr>
-    <th class="a-center">Total Space Used</th>
-    <th class="a-center">Total Torrents</th>
-    <th class="a-center">Seeders</th>
-    <th class="a-center">Leechers</th>
-    <th class="a-center">Completed DL</th>
-    <th class="a-center">Bytes Transferred </th>
-</tr>
-<tr>
-    <td class="a-center">{{ stat.s.all_size|filesizeformat }}</td>
-    <td class="a-center">{{ stat.s.all_torrents }}</td>
-    <td class="a-center">{{ stat.s.seeds }}</td>
-    <td class="a-center">{{ stat.s.leechs }}</td>
-    <td class="a-center">{{ stat.s.completeds }}</td>
-    <td class="a-center">{{ stat.s.b_transfers|filesizeformat }}</td>
-</tr>
-</table>
-{% endcomment %}
+</div>
 
 {% endblock %}

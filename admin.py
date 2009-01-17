@@ -18,7 +18,7 @@ class CategoryAdmin(admin.ModelAdmin):
 admin.site.register( Category, CategoryAdmin)
 
 class TorrentAdmin(admin.ModelAdmin):
-    list_display = ['name','t_remove']
+    list_display = ['name','category','t_remove']
 
 admin.site.register( Torrent, TorrentAdmin)
 

@@ -2,14 +2,15 @@
 {% load tracker %}
 {% block content %}
     {% block tracker_header %}
-        <div>
             {% block tracker_header_search %}
-            <div class="span-8 prepend-15">{% search_form %}</div>
+            <div class="span-8 prepend-16">{% search_form %}</div>
             <br/>
             <br/>
             {% endblock %}
 
+        <div class="a-center span-22">
             {% block tracker_header_add %}
+
             {% endblock %}
         </div>
     {% endblock %}

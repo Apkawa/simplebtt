@@ -20,6 +20,10 @@ def _stat( t, c, client):
     else:
         t.b_transfer = transfer
 
+    if client['event'] == 'completed' and c.left != 0:
+        t.completed += 1
+        stat.completeds += 1
+
     if client['event'] == 'stopped':
         c.delete()
         return False
@@ -27,14 +31,12 @@ def _stat( t, c, client):
     elif c.left != client['left'] or c.dl != client['downloaded'] or c.ul !=['uploaded']:
         c.dl, c.ul, c.left = client['downloaded'], client['uploaded'], client['left']
 
-    if c.left != client['left'] and client['left'] == '0' and c.left != 0:
-        t.completed += 1
-        stat.completeds += 1
-
     elif c.ip != client['ip']:
         c.ip = client['ip']
 
+
     c.save()
+    return True
 
 
 def main( request):
@@ -84,13 +86,12 @@ def main( request):
                     }
     c = t.clients.get_or_create(peer_id=client['peer_id'], defaults=_client)[0]
 
-    _stat(t, c, client)
-
-    t.save()
-
-    clients = [{'ip': i.ip, 'peer id': unquote( i.peer_id ), 'port': i.port} for i in t.clients.all()]
-    r = {'peers': clients, 'interval': 1800}
-
-    return HttpResponse( bencode(r))
+    if _stat(t, c, client):
+        t.save()
+        clients = [{'ip': i.ip, 'peer id': unquote( i.peer_id ), 'port': i.port} for i in t.clients.all()]
+        r = {'peers': clients, 'interval': 1800}
+        return HttpResponse( bencode(r))
+    else:
+        t.save()
 
 

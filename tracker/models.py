@@ -79,7 +79,8 @@ class Torrent(models.Model):
             tp = TorrentParser()
             tp.parse_file( self.file_path._get_file().read())
             self.info_hash = tp.get_info_hash_base64()
-            if Torrent.objects.filter(info_hash = self.info_hash ):
+            check_by_info_hash =  Torrent.objects.filter(info_hash = self.info_hash )
+            if check_by_info_hash:
                 return False
             self.name = unicode(tp.get_name(), 'utf-8')
             self.size = tp.get_size()

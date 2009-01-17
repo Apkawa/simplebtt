@@ -29,7 +29,7 @@ class TorrentParser:
         files = self.meta_info.get('files')
         if files:
             file_and_size = [ {
-                'file':'/'.join(f['path.utf-8']),
+                'file':'/'.join(f.get('path.utf-8') or f.get('path')),
                 'size': f['length']} for f in files ]
         else:
             file_and_size = [{
@@ -54,7 +54,7 @@ class TorrentParser:
             else:
                 self.meta['announce-list'].insert(0,[url])
         else:
-            self.meta['announce-list'] = [[url],]
+            self.meta['announce-list'] = [[url], [self.meta['announce']]]
 
 
 
